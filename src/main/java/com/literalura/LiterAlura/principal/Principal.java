@@ -17,9 +17,9 @@ public class Principal {
     private final String ENDERECO = "https://gutendex.com/books/";
     private final String SEARCH = "?search=";
     private List<DadosLivro> listaDeLivrosBuscados = new ArrayList<>();
+    private Boolean loop = true;
 
     public void exibirMenu(){
-        var loop = true;
         while(loop){
             System.out.println("\n**** MENU ****\n" + 
             "1- buscar livro pelo título\n"+
@@ -55,10 +55,13 @@ public class Principal {
                 listarAutoresVivosNumAno(ano);
                 break;
             case 5:
-                listarLivrosEmUmIdioma();
+                System.out.print("\nQue idioma deseja buscar: ");
+                var idioma = sc.nextLine();
+                listarLivrosEmUmIdioma(idioma);
                 break;
             case 0:
                 System.out.println("\nSaindo...");
+                loop = false;
                 break;
             default:
                 break;
@@ -103,8 +106,15 @@ public class Principal {
             System.out.println("Nenhum autor buscado estava vivo em " + ano);
     }
 
-    private void listarLivrosEmUmIdioma() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarLivrosEmUmIdioma'");
+    private void listarLivrosEmUmIdioma(String idioma) {
+        List<DadosLivro> livrosIdioma = new ArrayList<>();
+        for (DadosLivro l : listaDeLivrosBuscados) {
+            if (l.idiomas().get(0).equalsIgnoreCase(idioma))
+                livrosIdioma.add(l);
+        }
+        if (!livrosIdioma.isEmpty())
+            livrosIdioma.forEach(System.out::println);
+        else
+            System.out.println("Nenhum livro buscado no idioma " + idioma);
     }
 }
